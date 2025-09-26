@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="یادآوری اشتراکی NOTIFAREF">
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <title>یادآوری اشتراکی - NOTIFAREF</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-light shared-page" data-lang="fa">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-bell"></i>
+                <h1>NOTIFAREF</h1>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p data-i18n="common.loading">در حال بارگذاری...</p>
+        </div>
+    </div>
+
+    <!-- Shared Container -->
+    <div id="shared-app" class="shared-container">
+        <!-- Header -->
+        <header class="shared-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-bell"></i>
+                        <span>NOTIFAREF</span>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button id="theme-toggle" class="btn btn-ghost btn-icon" title="تغییر تم">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button id="language-toggle" class="btn btn-ghost btn-icon" title="تغییر زبان">
+                            <i class="fas fa-globe"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="shared-main">
+            <div class="container">
+                <!-- Shared Reminder Content -->
+                <div id="shared-content" class="shared-content">
+                    <!-- Error State -->
+                    <div id="error-state" class="error-state hidden">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h2 data-i18n="shared.error.title">یادآوری یافت نشد</h2>
+                        <p data-i18n="shared.error.description">
+                            این یادآوری وجود ندارد یا منقضی شده است.
+                        </p>
+                        <a href="/" class="btn btn-primary" data-i18n="shared.error.home">
+                            بازگشت به صفحه اصلی
+                        </a>
+                    </div>
+
+                    <!-- Shared Reminder Display -->
+                    <div id="reminder-display" class="reminder-display hidden">
+                        <div class="shared-badge">
+                            <i class="fas fa-share-alt"></i>
+                            <span data-i18n="shared.badge">یادآوری اشتراکی</span>
+                        </div>
+                        
+                        <div class="reminder-card">
+                            <div class="reminder-header">
+                                <div class="reminder-priority" id="reminder-priority">
+                                    <span class="priority-badge">متوسط</span>
+                                </div>
+                                <div class="reminder-actions">
+                                    <button id="import-reminder-btn" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-plus"></i>
+                                        <span data-i18n="shared.import">افزودن به یادآوری‌ها</span>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="reminder-content">
+                                <h1 id="reminder-title" class="reminder-title">عنوان یادآوری</h1>
+                                <p id="reminder-description" class="reminder-description">توضیحات یادآوری</p>
+                                
+                                <div class="reminder-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span class="detail-label" data-i18n="reminders.scheduled_time">زمان برنامه‌ریزی:</span>
+                                        <span id="reminder-time" class="detail-value">--</span>
+                                    </div>
+                                    
+                                    <div class="detail-item" id="tags-container">
+                                        <i class="fas fa-tags"></i>
+                                        <span class="detail-label" data-i18n="reminders.tags">برچسب‌ها:</span>
+                                        <div id="reminder-tags" class="tags-list">
+                                            <!-- Tags will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="reminder-footer">
+                                <div class="shared-by">
+                                    <i class="fas fa-user"></i>
+                                    <span data-i18n="shared.shared_by">اشتراک‌گذاری شده توسط:</span>
+                                    <strong id="shared-by-name">کاربر</strong>
+                                </div>
+                                
+                                <div class="shared-date">
+                                    <i class="fas fa-calendar"></i>
+                                    <span data-i18n="shared.shared_on">تاریخ اشتراک:</span>
+                                    <span id="shared-date">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Call to Action -->
+                        <div class="cta-section">
+                            <div class="cta-content">
+                                <h3 data-i18n="shared.cta.title">آیا می‌خواهید یادآوری‌های خود را مدیریت کنید؟</h3>
+                                <p data-i18n="shared.cta.description">
+                                    با NOTIFAREF حساب کاربری ایجاد کنید و یادآوری‌های هوشمند دریافت کنید
+                                </p>
+                                <div class="cta-actions">
+                                    <a href="/" class="btn btn-primary" data-i18n="shared.cta.signup">
+                                        ثبت نام رایگان
+                                    </a>
+                                    <a href="/" class="btn btn-outline" data-i18n="shared.cta.login">
+                                        ورود به حساب
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="shared-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo">
+                        <i class="fas fa-bell"></i>
+                        <span>NOTIFAREF</span>
+                    </div>
+                    <p data-i18n="footer.description">
+                        سیستم یادآوری هوشمند برای مدیریت بهتر زمان شما
+                    </p>
+                    <div class="footer-links">
+                        <a href="/" data-i18n="footer.home">صفحه اصلی</a>
+                        <a href="/#features" data-i18n="footer.features">ویژگی‌ها</a>
+                        <a href="/#about" data-i18n="footer.about">درباره ما</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Import Success Modal -->
+    <div id="import-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="shared.import_success.title">یادآوری اضافه شد</h3>
+                <button class="modal-close" id="import-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="success-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <p data-i18n="shared.import_success.description">
+                        یادآوری با موفقیت به حساب شما اضافه شد.
+                    </p>
+                    <div class="success-actions">
+                        <a href="/dashboard" class="btn btn-primary" data-i18n="shared.import_success.dashboard">
+                            مشاهده در داشبورد
+                        </a>
+                        <button id="import-modal-close-btn" class="btn btn-outline" data-i18n="common.close">
+                            بستن
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Required Modal -->
+    <div id="login-required-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="shared.login_required.title">ورود به حساب</h3>
+                <button class="modal-close" id="login-required-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="login-required-content">
+                    <div class="login-icon">
+                        <i class="fas fa-sign-in-alt"></i>
+                    </div>
+                    <p data-i18n="shared.login_required.description">
+                        برای افزودن این یادآوری به حساب خود، ابتدا وارد شوید.
+                    </p>
+                    <div class="login-actions">
+                        <a href="/" class="btn btn-primary" data-i18n="auth.login">
+                            ورود
+                        </a>
+                        <a href="/" class="btn btn-outline" data-i18n="auth.register">
+                            ثبت نام
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/i18n.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/pwa.js"></script>
+    <script src="/js/shared.js"></script>
+</body>
+</html>

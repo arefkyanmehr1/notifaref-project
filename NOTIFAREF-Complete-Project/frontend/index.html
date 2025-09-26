@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NOTIFAREF - سیستم یادآوری هوشمند با پشتیبانی از اعلان‌های وب و تقویم گوگل">
+    <meta name="keywords" content="یادآوری, اعلان, تقویم, PWA, نوتیفیکیشن">
+    <meta name="author" content="NOTIFAREF Team">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="NOTIFAREF">
+    <meta name="msapplication-TileColor" content="#4F46E5">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <title>NOTIFAREF - سیستم یادآوری هوشمند</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-light" data-lang="fa">
+    <!-- PWA Install Banner -->
+    <div id="pwa-install-banner" class="pwa-banner hidden">
+        <div class="pwa-banner-content">
+            <div class="pwa-banner-icon">
+                <i class="fas fa-download"></i>
+            </div>
+            <div class="pwa-banner-text">
+                <h4 data-i18n="pwa.install.title">نصب اپلیکیشن</h4>
+                <p data-i18n="pwa.install.description">NOTIFAREF را روی دستگاه خود نصب کنید</p>
+            </div>
+            <div class="pwa-banner-actions">
+                <button id="pwa-install-btn" class="btn btn-primary btn-sm" data-i18n="pwa.install.button">نصب</button>
+                <button id="pwa-dismiss-btn" class="btn btn-ghost btn-sm" data-i18n="common.dismiss">رد کردن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-bell"></i>
+                <h1>NOTIFAREF</h1>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p data-i18n="common.loading">در حال بارگذاری...</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-bell"></i>
+                        <span>NOTIFAREF</span>
+                    </div>
+                    
+                    <nav class="nav" id="main-nav">
+                        <a href="#features" data-i18n="nav.features">ویژگی‌ها</a>
+                        <a href="#about" data-i18n="nav.about">درباره ما</a>
+                        <a href="#contact" data-i18n="nav.contact">تماس</a>
+                    </nav>
+                    
+                    <div class="header-actions">
+                        <div class="theme-toggle">
+                            <button id="theme-toggle" class="btn btn-ghost btn-icon" title="تغییر تم">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="language-toggle">
+                            <button id="language-toggle" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-globe"></i>
+                                <span id="current-lang">فا</span>
+                            </button>
+                        </div>
+                        
+                        <div class="auth-buttons" id="auth-buttons">
+                            <button id="login-btn" class="btn btn-ghost" data-i18n="auth.login">ورود</button>
+                            <button id="register-btn" class="btn btn-primary" data-i18n="auth.register">ثبت نام</button>
+                        </div>
+                        
+                        <div class="user-menu hidden" id="user-menu">
+                            <button id="user-menu-btn" class="btn btn-ghost btn-icon">
+                                <i class="fas fa-user"></i>
+                            </button>
+                            <div class="dropdown-menu" id="user-dropdown">
+                                <a href="/dashboard" class="dropdown-item">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span data-i18n="nav.dashboard">داشبورد</span>
+                                </a>
+                                <a href="/profile" class="dropdown-item">
+                                    <i class="fas fa-user-cog"></i>
+                                    <span data-i18n="nav.profile">پروفایل</span>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <button id="logout-btn" class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span data-i18n="auth.logout">خروج</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1 class="hero-title" data-i18n="hero.title">
+                            سیستم یادآوری هوشمند
+                        </h1>
+                        <p class="hero-subtitle" data-i18n="hero.subtitle">
+                            یادآوری‌های خود را مدیریت کنید، اعلان‌های هوشمند دریافت کنید و با تقویم گوگل همگام‌سازی کنید
+                        </p>
+                        <div class="hero-actions">
+                            <button id="hero-get-started" class="btn btn-primary btn-lg" data-i18n="hero.get_started">
+                                شروع کنید
+                            </button>
+                            <button id="hero-learn-more" class="btn btn-outline btn-lg" data-i18n="hero.learn_more">
+                                بیشتر بدانید
+                            </button>
+                        </div>
+                        
+                        <div class="hero-features">
+                            <div class="feature-item">
+                                <i class="fas fa-bell"></i>
+                                <span data-i18n="hero.features.notifications">اعلان‌های هوشمند</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-calendar"></i>
+                                <span data-i18n="hero.features.calendar">همگام‌سازی تقویم</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span data-i18n="hero.features.pwa">اپلیکیشن وب</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-image">
+                        <div class="hero-mockup">
+                            <div class="mockup-phone">
+                                <div class="mockup-screen">
+                                    <div class="mockup-content">
+                                        <div class="mockup-header">
+                                            <div class="mockup-time">14:30</div>
+                                            <div class="mockup-battery">
+                                                <i class="fas fa-battery-three-quarters"></i>
+                                            </div>
+                                        </div>
+                                        <div class="mockup-app">
+                                            <div class="mockup-notification">
+                                                <i class="fas fa-bell"></i>
+                                                <div class="notification-content">
+                                                    <h4>یادآوری جلسه</h4>
+                                                    <p>جلسه تیم در ساعت 15:00</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="features.title">ویژگی‌های کلیدی</h2>
+                    <p class="section-subtitle" data-i18n="features.subtitle">
+                        همه چیزی که برای مدیریت یادآوری‌های خود نیاز دارید
+                    </p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3 data-i18n="features.notifications.title">اعلان‌های هوشمند</h3>
+                        <p data-i18n="features.notifications.description">
+                            دریافت اعلان‌های وب و ایمیل در زمان مناسب با پشتیبانی از اولویت‌بندی
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 data-i18n="features.calendar.title">همگام‌سازی تقویم</h3>
+                        <p data-i18n="features.calendar.description">
+                            اتصال به تقویم گوگل و همگام‌سازی خودکار یادآوری‌ها
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-repeat"></i>
+                        </div>
+                        <h3 data-i18n="features.recurring.title">یادآوری‌های تکراری</h3>
+                        <p data-i18n="features.recurring.description">
+                            تنظیم یادآوری‌های روزانه، هفتگی، ماهانه و سالانه
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <h3 data-i18n="features.sharing.title">اشتراک‌گذاری</h3>
+                        <p data-i18n="features.sharing.description">
+                            اشتراک‌گذاری یادآوری‌ها با دیگران از طریق لینک امن
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 data-i18n="features.analytics.title">آمار و گزارش</h3>
+                        <p data-i18n="features.analytics.description">
+                            مشاهده آمار عملکرد و گزارش‌های تفصیلی از یادآوری‌ها
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 data-i18n="features.security.title">امنیت بالا</h3>
+                        <p data-i18n="features.security.description">
+                            احراز هویت دو مرحله‌ای و رمزگذاری داده‌ها
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2 class="section-title" data-i18n="about.title">درباره NOTIFAREF</h2>
+                        <p data-i18n="about.description">
+                            NOTIFAREF یک سیستم یادآوری هوشمند و مدرن است که به شما کمک می‌کند تا هیچ کار مهمی را فراموش نکنید. 
+                            با استفاده از تکنولوژی‌های روز دنیا و پشتیبانی از زبان فارسی، این اپلیکیشن تجربه‌ای بی‌نظیر از مدیریت زمان ارائه می‌دهد.
+                        </p>
+                        
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">99%</div>
+                                <div class="stat-label" data-i18n="about.stats.reliability">قابلیت اطمینان</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label" data-i18n="about.stats.availability">در دسترس</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label" data-i18n="about.stats.privacy">حریم خصوصی</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-image">
+                        <div class="about-illustration">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <i class="fas fa-bell"></i>
+                            <span>NOTIFAREF</span>
+                        </div>
+                        <p data-i18n="footer.description">
+                            سیستم یادآوری هوشمند برای مدیریت بهتر زمان شما
+                        </p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 data-i18n="footer.links.title">لینک‌های مفید</h4>
+                        <ul>
+                            <li><a href="#features" data-i18n="footer.links.features">ویژگی‌ها</a></li>
+                            <li><a href="#about" data-i18n="footer.links.about">درباره ما</a></li>
+                            <li><a href="/dashboard" data-i18n="footer.links.dashboard">داشبورد</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 data-i18n="footer.support.title">پشتیبانی</h4>
+                        <ul>
+                            <li><a href="#" data-i18n="footer.support.help">راهنما</a></li>
+                            <li><a href="#" data-i18n="footer.support.contact">تماس با ما</a></li>
+                            <li><a href="#" data-i18n="footer.support.privacy">حریم خصوصی</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4 data-i18n="footer.social.title">شبکه‌های اجتماعی</h4>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2024 NOTIFAREF. <span data-i18n="footer.rights">تمامی حقوق محفوظ است.</span></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="auth-modal-title" data-i18n="auth.login">ورود</h3>
+                <button class="modal-close" id="auth-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username" data-i18n="auth.username">نام کاربری یا ایمیل</label>
+                        <input type="text" id="login-username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password" data-i18n="auth.password">رمز عبور</label>
+                        <div class="password-input">
+                            <input type="password" id="login-password" name="password" required>
+                            <button type="button" class="password-toggle" data-target="login-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="2fa-section" class="form-group hidden">
+                        <label for="login-2fa" data-i18n="auth.2fa_code">کد احراز هویت دو مرحله‌ای</label>
+                        <input type="text" id="login-2fa" name="twoFactorToken" maxlength="6" placeholder="123456">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full" data-i18n="auth.login">
+                        ورود
+                    </button>
+                    
+                    <div class="auth-links">
+                        <button type="button" id="show-register" class="link-button" data-i18n="auth.no_account">
+                            حساب کاربری ندارید؟ ثبت نام کنید
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form hidden">
+                    <div class="form-group">
+                        <label for="register-username" data-i18n="auth.username">نام کاربری</label>
+                        <input type="text" id="register-username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-email" data-i18n="auth.email">ایمیل</label>
+                        <input type="email" id="register-email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-password" data-i18n="auth.password">رمز عبور</label>
+                        <div class="password-input">
+                            <input type="password" id="register-password" name="password" required>
+                            <button type="button" class="password-toggle" data-target="register-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-firstName" data-i18n="auth.first_name">نام</label>
+                        <input type="text" id="register-firstName" name="firstName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-lastName" data-i18n="auth.last_name">نام خانوادگی</label>
+                        <input type="text" id="register-lastName" name="lastName">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full" data-i18n="auth.register">
+                        ثبت نام
+                    </button>
+                    
+                    <div class="auth-links">
+                        <button type="button" id="show-login" class="link-button" data-i18n="auth.have_account">
+                            حساب کاربری دارید؟ وارد شوید
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/i18n.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/pwa.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>

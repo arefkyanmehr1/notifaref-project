@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="داشبورد NOTIFAREF - مدیریت یادآوری‌های شخصی">
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="manifest" href="/manifest.json">
+    
+    <title>داشبورد - NOTIFAREF</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/themes.css">
+    <link rel="stylesheet" href="/css/rtl.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="theme-light dashboard-page" data-lang="fa">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-bell"></i>
+                <h1>NOTIFAREF</h1>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <p data-i18n="common.loading">در حال بارگذاری...</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div id="dashboard-app" class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-bell"></i>
+                    <span>NOTIFAREF</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span data-i18n="nav.dashboard">داشبورد</span>
+                </a>
+                <a href="#reminders" class="nav-item" data-page="reminders">
+                    <i class="fas fa-bell"></i>
+                    <span data-i18n="nav.reminders">یادآوری‌ها</span>
+                    <span class="badge" id="pending-count">0</span>
+                </a>
+                <a href="#calendar" class="nav-item" data-page="calendar">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span data-i18n="nav.calendar">تقویم</span>
+                </a>
+                <a href="#analytics" class="nav-item" data-page="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span data-i18n="nav.analytics">آمار</span>
+                </a>
+                <a href="#settings" class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span data-i18n="nav.settings">تنظیمات</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info" id="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name" id="user-name">کاربر</div>
+                        <div class="user-status" id="user-status">آنلاین</div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-actions">
+                    <button id="theme-toggle" class="btn btn-ghost btn-icon" title="تغییر تم">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="language-toggle" class="btn btn-ghost btn-icon" title="تغییر زبان">
+                        <i class="fas fa-globe"></i>
+                    </button>
+                    <button id="logout-btn" class="btn btn-ghost btn-icon" title="خروج">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="mobile-sidebar-toggle" id="mobile-sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 id="page-title" data-i18n="nav.dashboard">داشبورد</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="quick-actions">
+                        <button id="add-reminder-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span data-i18n="reminders.add">افزودن یادآوری</span>
+                        </button>
+                        
+                        <button id="notification-test-btn" class="btn btn-outline btn-icon" title="تست اعلان">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="user-menu">
+                        <button id="user-menu-btn" class="btn btn-ghost btn-icon">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        <div class="dropdown-menu" id="user-dropdown">
+                            <a href="/profile" class="dropdown-item">
+                                <i class="fas fa-user-cog"></i>
+                                <span data-i18n="nav.profile">پروفایل</span>
+                            </a>
+                            <button id="header-logout-btn" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span data-i18n="auth.logout">خروج</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page active">
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="total-reminders">0</div>
+                                <div class="stat-label" data-i18n="stats.total_reminders">کل یادآوری‌ها</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="completed-reminders">0</div>
+                                <div class="stat-label" data-i18n="stats.completed">تکمیل شده</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="pending-reminders">0</div>
+                                <div class="stat-label" data-i18n="stats.pending">در انتظار</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" id="overdue-reminders">0</div>
+                                <div class="stat-label" data-i18n="stats.overdue">عقب افتاده</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions-section">
+                        <h2 data-i18n="dashboard.quick_actions">اقدامات سریع</h2>
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-card" id="quick-add-reminder">
+                                <i class="fas fa-plus"></i>
+                                <span data-i18n="reminders.add">افزودن یادآوری</span>
+                            </button>
+                            <button class="quick-action-card" id="quick-view-upcoming">
+                                <i class="fas fa-calendar-day"></i>
+                                <span data-i18n="dashboard.upcoming">آینده</span>
+                            </button>
+                            <button class="quick-action-card" id="quick-view-overdue">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span data-i18n="dashboard.overdue">عقب افتاده</span>
+                            </button>
+                            <button class="quick-action-card" id="quick-calendar-sync">
+                                <i class="fas fa-sync"></i>
+                                <span data-i18n="calendar.sync">همگام‌سازی</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Reminders -->
+                    <div class="recent-reminders-section">
+                        <div class="section-header">
+                            <h2 data-i18n="dashboard.recent_reminders">یادآوری‌های اخیر</h2>
+                            <button class="btn btn-outline btn-sm" id="view-all-reminders">
+                                <span data-i18n="common.view_all">مشاهده همه</span>
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                        <div id="recent-reminders-list" class="reminders-list">
+                            <!-- Reminders will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reminders Page -->
+                <div id="reminders-page" class="page">
+                    <div class="page-header">
+                        <h2 data-i18n="nav.reminders">یادآوری‌ها</h2>
+                        <div class="page-actions">
+                            <button id="add-reminder-main-btn" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span data-i18n="reminders.add">افزودن یادآوری</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filters-section">
+                        <div class="filters-row">
+                            <div class="filter-group">
+                                <label data-i18n="filters.status">وضعیت:</label>
+                                <select id="status-filter">
+                                    <option value="" data-i18n="filters.all">همه</option>
+                                    <option value="pending" data-i18n="status.pending">در انتظار</option>
+                                    <option value="completed" data-i18n="status.completed">تکمیل شده</option>
+                                    <option value="snoozed" data-i18n="status.snoozed">به تعویق افتاده</option>
+                                    <option value="cancelled" data-i18n="status.cancelled">لغو شده</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label data-i18n="filters.priority">اولویت:</label>
+                                <select id="priority-filter">
+                                    <option value="" data-i18n="filters.all">همه</option>
+                                    <option value="urgent" data-i18n="priority.urgent">فوری</option>
+                                    <option value="high" data-i18n="priority.high">بالا</option>
+                                    <option value="medium" data-i18n="priority.medium">متوسط</option>
+                                    <option value="low" data-i18n="priority.low">پایین</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label data-i18n="filters.tags">برچسب‌ها:</label>
+                                <select id="tags-filter" multiple>
+                                    <!-- Tags will be populated dynamically -->
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label data-i18n="filters.search">جستجو:</label>
+                                <div class="search-input">
+                                    <input type="text" id="search-input" placeholder="جستجو در یادآوری‌ها...">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filters-actions">
+                            <button id="clear-filters-btn" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-times"></i>
+                                <span data-i18n="filters.clear">پاک کردن فیلترها</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Reminders List -->
+                    <div class="reminders-section">
+                        <div id="reminders-list" class="reminders-list">
+                            <!-- Reminders will be loaded here -->
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <div id="pagination" class="pagination hidden">
+                            <button id="prev-page" class="btn btn-outline btn-sm">
+                                <i class="fas fa-chevron-right"></i>
+                                <span data-i18n="pagination.previous">قبلی</span>
+                            </button>
+                            <span id="page-info" class="page-info">صفحه 1 از 1</span>
+                            <button id="next-page" class="btn btn-outline btn-sm">
+                                <span data-i18n="pagination.next">بعدی</span>
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar Page -->
+                <div id="calendar-page" class="page">
+                    <div class="page-header">
+                        <h2 data-i18n="nav.calendar">تقویم</h2>
+                        <div class="page-actions">
+                            <button id="calendar-connect-btn" class="btn btn-primary">
+                                <i class="fab fa-google"></i>
+                                <span data-i18n="calendar.connect">اتصال به گوگل</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="calendar-content">
+                        <!-- Calendar integration content -->
+                        <div class="calendar-status" id="calendar-status">
+                            <div class="status-card">
+                                <i class="fas fa-calendar-times"></i>
+                                <h3 data-i18n="calendar.not_connected">تقویم متصل نیست</h3>
+                                <p data-i18n="calendar.connect_description">برای همگام‌سازی یادآوری‌ها با تقویم گوگل، اتصال برقرار کنید</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Page -->
+                <div id="analytics-page" class="page">
+                    <div class="page-header">
+                        <h2 data-i18n="nav.analytics">آمار و گزارش</h2>
+                        <div class="page-actions">
+                            <select id="analytics-period">
+                                <option value="7" data-i18n="analytics.period.week">هفته گذشته</option>
+                                <option value="30" selected data-i18n="analytics.period.month">ماه گذشته</option>
+                                <option value="90" data-i18n="analytics.period.quarter">سه ماه گذشته</option>
+                                <option value="365" data-i18n="analytics.period.year">سال گذشته</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="analytics-content">
+                        <!-- Charts will be rendered here -->
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h3 data-i18n="analytics.completion_rate">نرخ تکمیل</h3>
+                                <canvas id="completion-chart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h3 data-i18n="analytics.priority_distribution">توزیع اولویت</h3>
+                                <canvas id="priority-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settings-page" class="page">
+                    <div class="page-header">
+                        <h2 data-i18n="nav.settings">تنظیمات</h2>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- Settings sections will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Reminder Modal -->
+    <div id="reminder-modal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="reminder-modal-title" data-i18n="reminders.add">افزودن یادآوری</h3>
+                <button class="modal-close" id="reminder-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="reminder-form" class="reminder-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reminder-title" data-i18n="reminders.title">عنوان *</label>
+                            <input type="text" id="reminder-title" name="title" required maxlength="200">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reminder-description" data-i18n="reminders.description">توضیحات</label>
+                            <textarea id="reminder-description" name="description" rows="3" maxlength="1000"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reminder-date" data-i18n="reminders.date">تاریخ *</label>
+                            <input type="date" id="reminder-date" name="date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reminder-time" data-i18n="reminders.time">زمان *</label>
+                            <input type="time" id="reminder-time" name="time" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reminder-priority" data-i18n="reminders.priority">اولویت</label>
+                            <select id="reminder-priority" name="priority">
+                                <option value="low" data-i18n="priority.low">پایین</option>
+                                <option value="medium" selected data-i18n="priority.medium">متوسط</option>
+                                <option value="high" data-i18n="priority.high">بالا</option>
+                                <option value="urgent" data-i18n="priority.urgent">فوری</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reminder-recurrence" data-i18n="reminders.recurrence">تکرار</label>
+                            <select id="reminder-recurrence" name="recurrence">
+                                <option value="none" data-i18n="recurrence.none">بدون تکرار</option>
+                                <option value="daily" data-i18n="recurrence.daily">روزانه</option>
+                                <option value="weekly" data-i18n="recurrence.weekly">هفتگی</option>
+                                <option value="monthly" data-i18n="recurrence.monthly">ماهانه</option>
+                                <option value="yearly" data-i18n="recurrence.yearly">سالانه</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reminder-tags" data-i18n="reminders.tags">برچسب‌ها</label>
+                            <input type="text" id="reminder-tags" name="tags" placeholder="کار، شخصی، مهم (با کاما جدا کنید)">
+                            <small class="form-help" data-i18n="reminders.tags_help">برچسب‌ها را با کاما از هم جدا کنید</small>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-ghost" id="reminder-cancel-btn" data-i18n="common.cancel">
+                            لغو
+                        </button>
+                        <button type="submit" class="btn btn-primary" data-i18n="common.save">
+                            ذخیره
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/reminders.js"></script>
+    <script src="/js/calendar.js"></script>
+    <script src="/js/analytics.js"></script>
+    <script src="/js/pwa.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
